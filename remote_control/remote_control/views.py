@@ -13,54 +13,28 @@
 from django.shortcuts import render_to_response
 from django.conf import settings
 from .driver import camera, stream
+from remote_control.templates.models import RecordDriver
 from picar import back_wheels, front_wheels
 from django.http import HttpResponse
 import picar
-import os
-import time
+
 
 try:
-    import cv2
-    camera = cv2.VideoCapture(-1)
-    record_mode = True
-    print('Using record mode')
+    picar.setup()
+    db_file = "/home/pi/SunFounder_PiCar-V/remote_control/remote_control/driver/config"
+    fw = front_wheels.Front_Wheels(debug=False, db=db_file)
+    bw = back_wheels.Back_Wheels(debug=False, db=db_file)
+    cam = camera.Camera(debug=False, db=db_file)
+    cam.ready()
+    bw.ready()
+    fw.ready()
 except:
-    record_mode = False
-    print('Using stream mode')
-
-picar.setup()
-db_file = "/home/pi/SunFounder_PiCar-V/remote_control/remote_control/driver/config"
-fw = front_wheels.Front_Wheels(debug=False, db=db_file)
-bw = back_wheels.Back_Wheels(debug=False, db=db_file)
-cam = camera.Camera(debug=False, db=db_file)
-cam.ready()
-bw.ready()
-fw.ready()
+    print('Cannot setup picar, are your running on a Raspberry Pi?')
 
 SPEED = 60
 bw_status = 0
-action = ''
-SAVE_IMAGES = False
 
-if record_mode:
-
-    while camera.isOpened():
-        _, image = camera.read()
-        cv2.imshow('Image', image)
-
-        if SAVE_IMAGES:
-            filename = "%s_%d_%03d.png" % (action, int(round(time.time() * 1000)), SPEED)
-            cv2.imwrite(os.path.join(settings.RECORD_ROOT, filename), image)
-            print(action, SPEED)
-
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    camera.release()
-    cv2.destroyAllWindows()
-
-else:
-
+if settings.STREAM:
     print(stream.start())
 
 
@@ -125,7 +99,11 @@ def run(request):
         if bw_status != 0:
             bw.speed = SPEED
         debug = "speed =", speed
-    host = stream.get_host().decode('utf-8').split(' ')[0]
+    RecordDriver.objects.create(action=action, speed=SPEED)
+    if settings.STREAM:
+        host = stream.get_host().decode('utf-8').split(' ')[0]
+    else:
+        host = None
     return render_to_response("run.html", {'host': host})
 
 

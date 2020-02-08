@@ -124,4 +124,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-RECORD_ROOT = 'home/pi/videos'
+RECORD_ROOT = 'home/pi/record'
+STREAM = False
