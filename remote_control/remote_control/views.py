@@ -21,10 +21,9 @@ import picar
 
 try:
     picar.setup()
-    db_file = "/home/pi/SunFounder_PiCar-V/remote_control/remote_control/driver/config"
-    fw = front_wheels.Front_Wheels(debug=False, db=db_file)
-    bw = back_wheels.Back_Wheels(debug=False, db=db_file)
-    cam = camera.Camera(debug=False, db=db_file)
+    fw = front_wheels.Front_Wheels(debug=False, db=settings.DB_FILE)
+    bw = back_wheels.Back_Wheels(debug=False, db=settings.DB_FILE)
+    cam = camera.Camera(debug=False, db=settings.DB_FILE)
     cam.ready()
     bw.ready()
     fw.ready()
@@ -99,12 +98,13 @@ def run(request):
         if bw_status != 0:
             bw.speed = SPEED
         debug = "speed =", speed
-    RecordDriver.objects.create(action=action, speed=SPEED)
+    if 'action' in request.GET or 'speed' in request.GET:
+        RecordDriver.objects.create(action=action, speed=SPEED)
     if settings.STREAM:
         host = stream.get_host().decode('utf-8').split(' ')[0]
+        return render_to_response("run.html", {'host': host})
     else:
-        host = None
-    return render_to_response("run.html", {'host': host})
+        return render_to_response("run_modified.html")
 
 
 def cali(request):

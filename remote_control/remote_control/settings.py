@@ -124,5 +124,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+# PiCar
+
+DB_FILE = '/home/pi/SunFounder_PiCar-V/remote_control/remote_control/driver/config'
 RECORD_ROOT = 'home/pi/record'
 STREAM = False
