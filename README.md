@@ -1,3 +1,7 @@
+Code modified to record driver actions and video frames for imitation learning. 
+  
+Updates to the main repo can be merged using `git pull upstream master` and updates can be pushed to this repo using `git push origin`.
+
 ## SunFounder Smart Video Car Kit for Raspberry Pi
 SunFounder Smart Video Car Kit V2.0
 
