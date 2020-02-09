@@ -128,7 +128,7 @@ STATICFILES_DIRS = [
 # PiCar
 
 CONFIG_FILE = '/home/pi/SunFounder_PiCar-V/remote_control/remote_control/driver/config'
-RECORD_DIR = BASE_DIR + '/capture'
-RECORD_TIME_DELAY_SECONDS = 10
-CAPTURE_WIDTH = 320
-CAPTURE_HEIGHT = 240
+RECORD_DIR = os.environ.get('RECORD_DIR', BASE_DIR + '/capture')
+RECORD_TIME_DELAY_SECONDS = os.environ.get('RECORD_TIME_DELAY_SECONDS', 10)
+CAPTURE_WIDTH = os.environ.get('CAPTURE_WIDTH', 320)
+CAPTURE_HEIGHT = os.environ.get('CAPTURE_HEIGHT', 240)
