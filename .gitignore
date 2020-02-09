@@ -13,3 +13,5 @@ __pycache__
 .DS_Store
 .idea
 *.egg-info
+
+remote_control/capture/*
