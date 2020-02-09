@@ -14,6 +14,7 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 from .driver import camera, stream
 from remote_control.templates.models import RecordDriver
+from remote_control.templates.utils import VideoCaptureThreading
 from picar import back_wheels, front_wheels
 from django.http import HttpResponse
 import picar
@@ -35,6 +36,8 @@ bw_status = 0
 
 if settings.STREAM:
     print(stream.start())
+else:
+    capture = VideoCaptureThreading(width=160, height=120)
 
 
 def home(request):
@@ -63,7 +66,6 @@ def run(request):
         elif action == 'stop':
             bw.stop()
             bw_status = 0
-
         # ============== Front wheels =============
         elif action == 'fwready':
             fw.ready()
@@ -74,9 +76,7 @@ def run(request):
         elif action == 'fwstraight':
             fw.turn_straight()
         elif 'fwturn' in action:
-            print("turn %s" % action)
             fw.turn(int(action.split(':')[1]))
-
         # ================ Camera =================
         elif action == 'camready':
             cam.ready()
@@ -88,6 +88,14 @@ def run(request):
             cam.turn_up(20)
         elif action == 'camdown':
             cam.turn_down(20)
+        elif not settings.STREAM and action == 'startcapture':
+            capture.start()
+        elif not settings.STREAM and action == 'stopcapture':
+            capture.stop()
+        elif not settings.STREAM and action == 'startfsd':
+            pass
+        elif not settings.STREAM and action == 'stopfsd':
+            pass
     if 'speed' in request.GET:
         speed = int(request.GET['speed'])
         if speed < 0:
