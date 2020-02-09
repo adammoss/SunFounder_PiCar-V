@@ -37,7 +37,7 @@ bw_status = 0
 if settings.STREAM:
     print(stream.start())
 else:
-    capture = VideoCaptureThreading(width=160, height=120)
+    capture = VideoCaptureThreading(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT)
 
 
 def home(request):

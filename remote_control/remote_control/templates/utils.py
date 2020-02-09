@@ -7,7 +7,6 @@ from django.utils import timezone
 
 import threading
 import cv2
-import imutils
 import time
 import os
 
@@ -42,7 +41,6 @@ class VideoCaptureThreading:
         while self.started:
             start_time = time.time()
             grabbed, frame = self.cap.read()
-            frame = imutils.resize(frame, width=self.width)
             cv2.imwrite(os.path.join(settings.CAPTURE_DIR, "%s.png" % int(timezone.now().timestamp() * 1000)), frame)
             time.sleep(settings.CAPTURE_TIME_DELAY_SECONDS - time.time() + start_time)
             with self.read_lock:
