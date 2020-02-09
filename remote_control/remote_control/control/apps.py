@@ -3,5 +3,5 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class TemplatesConfig(AppConfig):
-    name = 'templates'
+class ControlConfig(AppConfig):
+    name = 'control'

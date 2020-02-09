@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from remote_control.templates.models import RecordDriver
+from remote_control.control.models import RecordDriver
 
 
 class RecordActionAdmin(admin.ModelAdmin):

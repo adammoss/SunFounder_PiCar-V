@@ -15,8 +15,8 @@ from django.conf import settings
 from django.http import HttpResponse
 
 from .driver import camera, stream
-from remote_control.templates.models import RecordDriver
-from remote_control.templates.utils import Capture, Record, FSD
+from remote_control.control.models import RecordDriver
+from remote_control.control.utils import Capture, Record, FSD
 
 from picar import back_wheels, front_wheels
 import picar
