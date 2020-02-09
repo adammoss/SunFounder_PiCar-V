@@ -2,9 +2,7 @@
 Based on https://github.com/gilbertfrancois/video-capture-async
 """
 
-from django.conf import settings
 from django.utils import timezone
-
 import threading
 import cv2
 import time
@@ -32,12 +30,14 @@ class Capture:
 
 
 class Record:
-    def __init__(self, capture):
+    def __init__(self, capture, record_dir, record_time_delay=1):
         self.capture = capture
+        self.record_dir = record_dir
+        self.record_time_delay = record_time_delay
         self.started = False
         self.read_lock = threading.Lock()
-        if not os.path.exists(settings.RECORD_DIR):
-            os.makedirs(settings.RECORD_DIR)
+        if not os.path.exists(record_dir):
+            os.makedirs(record_dir)
 
     def start(self):
         if self.started:
@@ -54,8 +54,9 @@ class Record:
             grabbed, frame = self.capture.camera.read()
             if frame.shape[1] != self.capture.width:
                 frame = imutils.resize(frame, width=self.capture.width)
-            cv2.imwrite(os.path.join(settings.RECORD_DIR, "%s.png" % int(timezone.now().timestamp() * 1000)), frame)
-            time.sleep(settings.RECORD_TIME_DELAY_SECONDS - time.time() + start_time)
+            timestamp = timezone.now().timestamp() * 1000
+            cv2.imwrite(os.path.join(self.record_dir, "%s.png" % int(timestamp)), frame)
+            time.sleep(self.record_time_delay - time.time() + start_time)
             with self.read_lock:
                 self.grabbed = grabbed
                 self.frame = frame
@@ -69,19 +70,3 @@ class Record:
     def stop(self):
         self.started = False
         self.thread.join()
-
-
-class FSD:
-    def __init__(self, capture, front_wheels, back_wheels, camera):
-        self.capture = capture
-        self.front_wheels = front_wheels
-        self.back_wheels = back_wheels
-        self.camera = camera
-        if self.back_wheels is not None:
-            self.back_wheels.speed = 0
-
-    def start(self):
-        pass
-
-    def stop(self):
-        pass

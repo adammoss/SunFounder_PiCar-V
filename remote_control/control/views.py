@@ -15,7 +15,7 @@ from django.conf import settings
 
 from remote_control.driver import camera, stream
 from control.models import RecordDriver
-from control.utils import Capture, Record, FSD
+from control.utils import Capture, Record
 
 from picar import back_wheels, front_wheels
 import picar
@@ -35,15 +35,24 @@ except:
     cam = None
     print('Cannot setup picar, are your running on a Raspberry Pi?')
 
+if not settings.STREAM:
+    capture = Capture(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT)
+    record = Record(capture, settings.RECORD_DIR, record_time_delay=settings.RECORD_TIME_DELAY_SECONDS)
+else:
+    print(stream.start())
+    capture = None
+    record = None
+
+try:
+    import autopilot as ap
+    fsd = ap.FSD(capture, fw, bw, cam)
+except:
+    fsd = None
+    print('Could not import FSD package')
+
+
 SPEED = 60
 bw_status = 0
-
-if settings.STREAM:
-    print(stream.start())
-else:
-    capture = Capture(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT)
-    record = Record(capture)
-    fsd = FSD(capture, fw, bw, cam)
 
 
 def home(request):
@@ -98,9 +107,9 @@ def run(request):
             record.start()
         elif not settings.STREAM and action == 'stoprecord':
             record.stop()
-        elif not settings.STREAM and action == 'startfsd':
+        elif fsd is not None and not settings.STREAM and action == 'startfsd':
             fsd.start()
-        elif not settings.STREAM and action == 'stopfsd':
+        elif fsd is not None and not settings.STREAM and action == 'stopfsd':
             fsd.stop()
     if 'speed' in request.GET:
         speed = int(request.GET['speed'])
