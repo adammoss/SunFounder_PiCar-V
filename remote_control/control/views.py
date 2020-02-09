@@ -46,6 +46,10 @@ else:
     fsd = FSD(capture, fw, bw, cam)
 
 
+def home(request):
+    return render_to_response("base.html")
+
+
 def run(request):
     global SPEED, bw_status, action, SAVE_IMAGES
     debug = ''
