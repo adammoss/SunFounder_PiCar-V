@@ -22,9 +22,9 @@ import picar
 
 try:
     picar.setup()
-    fw = front_wheels.Front_Wheels(debug=False, db=settings.DB_FILE)
-    bw = back_wheels.Back_Wheels(debug=False, db=settings.DB_FILE)
-    cam = camera.Camera(debug=False, db=settings.DB_FILE)
+    fw = front_wheels.Front_Wheels(debug=False, db=settings.CONFIG_FILE)
+    bw = back_wheels.Back_Wheels(debug=False, db=settings.CONFIG_FILE)
+    cam = camera.Camera(debug=False, db=settings.CONFIG_FILE)
     cam.ready()
     bw.ready()
     fw.ready()

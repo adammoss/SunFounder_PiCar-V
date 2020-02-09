@@ -125,7 +125,7 @@ STATICFILES_DIRS = [
 
 # PiCar
 
-DB_FILE = '/home/pi/SunFounder_PiCar-V/remote_control/remote_control/driver/config'
+CONFIG_FILE = '/home/pi/SunFounder_PiCar-V/remote_control/remote_control/driver/config'
 CAPTURE_DIR = BASE_DIR + '/capture'
 CAPTURE_TIME_DELAY_SECONDS = 10
 STREAM = False
