@@ -12,11 +12,13 @@
 
 from django.shortcuts import render_to_response
 from django.conf import settings
+from django.http import HttpResponse
+
 from .driver import camera, stream
 from remote_control.templates.models import RecordDriver
-from remote_control.templates.utils import VideoCaptureThreading
+from remote_control.templates.utils import Capture, Record, FSD
+
 from picar import back_wheels, front_wheels
-from django.http import HttpResponse
 import picar
 
 
@@ -29,6 +31,9 @@ try:
     bw.ready()
     fw.ready()
 except:
+    fw = None
+    bw = None
+    cam = None
     print('Cannot setup picar, are your running on a Raspberry Pi?')
 
 SPEED = 60
@@ -37,7 +42,9 @@ bw_status = 0
 if settings.STREAM:
     print(stream.start())
 else:
-    capture = VideoCaptureThreading(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT)
+    capture = Capture(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT)
+    record = Record(capture)
+    fsd = FSD(capture, fw, bw, cam)
 
 
 def home(request):
@@ -88,21 +95,17 @@ def run(request):
             cam.turn_up(20)
         elif action == 'camdown':
             cam.turn_down(20)
-        elif not settings.STREAM and action == 'startcapture':
-            capture.start()
-        elif not settings.STREAM and action == 'stopcapture':
-            capture.stop()
+        elif not settings.STREAM and action == 'startrecord':
+            record.start()
+        elif not settings.STREAM and action == 'stoprecord':
+            record.stop()
         elif not settings.STREAM and action == 'startfsd':
-            pass
+            fsd.start()
         elif not settings.STREAM and action == 'stopfsd':
-            pass
+            fsd.stop()
     if 'speed' in request.GET:
         speed = int(request.GET['speed'])
-        if speed < 0:
-            speed = 0
-        if speed > 100:
-            speed = 100
-        SPEED = speed
+        SPEED = min(max(speed, 0), 100)
         if bw_status != 0:
             bw.speed = SPEED
         debug = "speed =", speed
@@ -137,7 +140,6 @@ def cali(request):
         elif action == 'camcaliok':
             print('"%s" command received' % action)
             cam.cali_ok()
-
         # ========= Front wheel cali ===========
         elif action == 'fwcali':
             print('"%s" command received' % action)
@@ -151,7 +153,6 @@ def cali(request):
         elif action == 'fwcaliok':
             print('"%s" command received' % action)
             fw.cali_ok()
-
         # ========= Back wheel cali ===========
         elif action == 'bwcali':
             print('"%s" command received' % action)
