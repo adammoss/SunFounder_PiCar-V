@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+STREAM = False
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -125,7 +127,6 @@ STATICFILES_DIRS = [
 
 # PiCar
 
-STREAM = False
 CONFIG_FILE = '/home/pi/SunFounder_PiCar-V/remote_control/remote_control/driver/config'
 RECORD_DIR = BASE_DIR + '/capture'
 RECORD_TIME_DELAY_SECONDS = 10
