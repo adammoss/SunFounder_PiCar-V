@@ -30,11 +30,13 @@ class Capture:
 
 
 class Record:
-    def __init__(self, capture, record_dir, record_time_delay=1):
+    def __init__(self, capture, record_dir, record_time_delay=1, record_size_limit=1):
         self.capture = capture
         self.record_dir = record_dir
         self.record_time_delay = record_time_delay
+        self.record_size_limit = record_size_limit
         self.started = False
+        self.thread = None
         self.read_lock = threading.Lock()
         if not os.path.exists(record_dir):
             os.makedirs(record_dir)
@@ -52,10 +54,15 @@ class Record:
         while self.started:
             start_time = time.time()
             grabbed, frame = self.capture.camera.read()
-            if frame.shape[1] != self.capture.width:
-                frame = imutils.resize(frame, width=self.capture.width)
-            timestamp = timezone.now().timestamp() * 1000
-            cv2.imwrite(os.path.join(self.record_dir, "%s.png" % int(timestamp)), frame)
+            if frame is not None:
+                if frame.shape[1] != self.capture.width:
+                    frame = imutils.resize(frame, width=self.capture.width)
+                timestamp = timezone.now().timestamp() * 1000
+                tot_bytes = sum(os.path.getsize(os.path.join(self.record_dir, f)) for f in os.listdir(self.record_dir))
+                if tot_bytes / 1073741824 < self.record_size_limit:
+                    cv2.imwrite(os.path.join(self.record_dir, "%s.png" % int(timestamp)), frame)
+                else:
+                    print('[!] Not saving image, directory size too large.')
             time.sleep(self.record_time_delay - time.time() + start_time)
             with self.read_lock:
                 self.grabbed = grabbed
@@ -69,4 +76,5 @@ class Record:
 
     def stop(self):
         self.started = False
-        self.thread.join()
+        if self.thread is not None:
+            self.thread.join()
