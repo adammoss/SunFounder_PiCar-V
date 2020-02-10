@@ -11,6 +11,7 @@
 '''
 
 from django.shortcuts import render_to_response
+from django.http import HttpResponse
 from django.conf import settings
 
 from remote_control.driver import camera, stream
@@ -57,6 +58,10 @@ bw_status = 0
 
 def home(request):
     return render_to_response("base.html")
+
+
+def connection_test(request):
+	return HttpResponse('OK')
 
 
 def run(request):
