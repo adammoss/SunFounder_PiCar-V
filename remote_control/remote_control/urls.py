@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^$', control_views.home),
     url(r'^run/$', control_views.run),
     url(r'^cali/$', control_views.cali),
+    url(r'^connection_test/$', control_views.connection_test),
 ]
