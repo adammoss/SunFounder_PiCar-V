@@ -33,7 +33,7 @@ except:
     fw = None
     bw = None
     cam = None
-    print('Cannot setup picar, are your running on a Raspberry Pi?')
+    print('[!] Cannot setup picar, are your running on a Raspberry Pi?')
 
 if not settings.STREAM:
     capture = Capture(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT)
@@ -45,10 +45,10 @@ else:
 
 try:
     import autopilot as ap
-    fsd = ap.FSD(capture, fw, bw, cam)
+    fsd = ap.AutoPilot(capture, fw, bw, cam)
 except:
     fsd = None
-    print('Could not import FSD package')
+    print('[!] Could not import autopilot package, have you installed it?')
 
 
 SPEED = 60
