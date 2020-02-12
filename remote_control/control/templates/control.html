@@ -9,9 +9,18 @@
     <b-card bg-variant="light" class="my-4">
 
         <b-row class="text-center">
-             <b-col cols="12" class="my-3">
-                 <h5>Speed: [[speed]]</h5>
-             </b-col>
+
+            <b-col cols="12" class="my-3">
+                <!--<h5>Speed: [[speed]]</h5>-->
+                 <b-form-radio-group
+                    id="btn-radios-2"
+                    v-model="speed"
+                    :options="speedOptions"
+                    buttons
+                    button-variant="outline-primary"
+                    size="lg"
+            ></b-form-radio-group>
+            </b-col>
             <b-col cols="12" class="my-3">
                 <!--<vue-slider
                         v-model="speed"
@@ -23,13 +32,12 @@
                         :process-style="{ backgroundColor: '#007bff' }"
                         v-bind="horizontalSliderOptions"
                 ></vue-slider>-->
-                <b-form-input id="speed-range" v-model="speed" type="range" min=-70 max=70 step=10></b-form-input>
             </b-col>
             <b-col cols="12" class="my-3">
                 <h5>Steering Angle: [[angle]]</h5>
-             </b-col>
-            <b-col cols="12"  class="my-3">
-                <!--<vue-slider
+            </b-col>
+            <b-col cols="12" class="my-3">
+                <vue-slider
                         v-model="angle"
                         :min="-40"
                         :max="40"
@@ -38,8 +46,7 @@
                         :marks="[-40, -30, -20, -10, 0, 10, 20, 30, 40]"
                         :process-style="{ backgroundColor: '#007bff' }"
                         v-bind="horizontalSliderOptions"
-                ></vue-slider>-->
-                <b-form-input id="angle-range" v-model="angle" type="range" min=-40 max=40 step=5></b-form-input>
+                ></vue-slider>
             </b-col>
         </b-row>
 
@@ -47,7 +54,7 @@
 
     <b-card bg-variant="light" class="my-4">
 
-         <b-row class="my-4 text-center">
+        <b-row class="my-4 text-center">
             <b-col cols="6" class="my-1">
                 <b-form-checkbox v-model="record" name="record-button" switch size="lg">
                     Record Driving
@@ -85,7 +92,14 @@
             horizontalSliderOptions: {
                 dotSize: 25,
                 height: 20,
-            }
+            },
+            speedOptions: [
+                {text: 'Reverse', value: -30},
+                {text: 'Stop', value: 0},
+                {text: 'Slow', value: 30},
+                {text: 'Medium', value: 40},
+                {text: 'Fast', value: 50}
+            ],
         },
         computed: {},
         mounted() {
