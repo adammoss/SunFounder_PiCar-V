@@ -5,13 +5,12 @@
 """
 
 from django.shortcuts import render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators import gzip
 
 from remote_control.driver import camera, stream
-from control.models import RecordDriver
 from control.utils import Capture, Record
 
 from picar import back_wheels, front_wheels
@@ -44,7 +43,6 @@ record = Record(capture, record_dir=settings.RECORD_DIR, record_time_delay=setti
 
 try:
     import autopilot as ap
-
     fsd = ap.AutoPilot(capture, fw, bw, cam)
 except:
     fsd = None
@@ -65,43 +63,38 @@ def connection_test(request):
 
 @csrf_exempt
 def car(request):
-    global SPEED, ANGLE, action
+    global SPEED, ANGLE
     data = json.loads(request.body.decode('utf-8'))
     print(data)
     if 'angle' in data:
         angle = max(min(data['angle'], max_angle), min_angle)
-        fw.turn(angle)
-        ANGLE = angle
-        action = 'angle'
-        RecordDriver.objects.create(action=action, angle=ANGLE, speed=SPEED)
+        if angle != ANGLE:
+            ANGLE = angle
+            record.state = '%s_%s' % (ANGLE, SPEED)
+            fw.turn(angle)
     if 'speed' in data:
         speed = max(min(data['speed'], 100), -100)
-        if speed < 0:
-            bw.backward()
-            bw.speed = abs(speed)
-        elif speed == 0:
-            bw.stop()
-        else:
-            bw.forward()
-            bw.speed = speed
-        SPEED = speed
-        action = 'speed'
-        RecordDriver.objects.create(action=action, angle=ANGLE, speed=SPEED)
+        if speed != SPEED:
+            SPEED = speed
+            record.state = '%s_%s' % (ANGLE, SPEED)
+            if speed < 0:
+                bw.backward()
+                bw.speed = abs(speed)
+            elif speed == 0:
+                bw.stop()
+            else:
+                bw.forward()
+                bw.speed = speed
     if 'record' in data:
         if data['record']:
             record.start()
-            action = 'startrecord'
         else:
             record.stop()
-            action = 'stoprecord'
-        action = 'record'
     if 'fsd' in data and fsd is not None:
         if data['fsd']:
             fsd.start()
-            action = 'startfsd'
         else:
             fsd.stop()
-            action = 'stopfsd'
     if 'action' in data:
         action = data['action']
         # ========== Camera calibration =========
