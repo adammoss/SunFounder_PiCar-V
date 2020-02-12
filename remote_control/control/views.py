@@ -11,7 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators import gzip
 
 from remote_control.driver import camera, stream
-from control.models import RecordDriver
 from control.utils import Capture, Record
 
 from picar import back_wheels, front_wheels
@@ -44,7 +43,6 @@ record = Record(capture, record_dir=settings.RECORD_DIR, record_time_delay=setti
 
 try:
     import autopilot as ap
-
     fsd = ap.AutoPilot(capture, fw, bw, cam)
 except:
     fsd = None
