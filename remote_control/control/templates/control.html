@@ -9,11 +9,11 @@
     <b-card bg-variant="light" class="my-4">
 
         <b-row class="text-center">
-             <b-col cols="12" class="my-4">
-                 <h5>Speed</h5>
+             <b-col cols="12" class="my-3">
+                 <h5>Speed: [[speed]]</h5>
              </b-col>
-            <b-col cols="12" class="my-4">
-                <vue-slider
+            <b-col cols="12" class="my-3">
+                <!--<vue-slider
                         v-model="speed"
                         :min="-70"
                         :max="70"
@@ -22,13 +22,14 @@
                         :marks="[-60, -40, -20, 0, 20, 40, 60]"
                         :process-style="{ backgroundColor: '#007bff' }"
                         v-bind="horizontalSliderOptions"
-                ></vue-slider>
+                ></vue-slider>-->
+                <b-form-input id="speed-range" v-model="speed" type="range" min="-70" max="70" step="10"></b-form-input>
             </b-col>
-            <b-col cols="12" class="my-4">
-                <h5>Steering Angle</h5>
+            <b-col cols="12" class="my-3">
+                <h5>Steering Angle: [[angle]]</h5>
              </b-col>
-            <b-col cols="12"  class="my-4">
-                <vue-slider
+            <b-col cols="12"  class="my-3">
+                <!--<vue-slider
                         v-model="angle"
                         :min="-40"
                         :max="40"
@@ -37,7 +38,8 @@
                         :marks="[-40, -30, -20, -10, 0, 10, 20, 30, 40]"
                         :process-style="{ backgroundColor: '#007bff' }"
                         v-bind="horizontalSliderOptions"
-                ></vue-slider>
+                ></vue-slider>-->
+                <b-form-input id="angle-range" v-model="angle" type="range" min="-40" max="40" step="5"></b-form-input>
             </b-col>
         </b-row>
 
