@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', control_views.home),
     url(r'^control/$', control_views.control),
+    url(r'^stream/$', control_views.stream),
     url(r'^car/$', control_views.car),
     url(r'^calibration/$', control_views.calibration),
     url(r'^connection_test/$', control_views.connection_test),

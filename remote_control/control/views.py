@@ -5,9 +5,10 @@
 """
 
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators import gzip
 
 from remote_control.driver import camera, stream
 from control.models import RecordDriver
@@ -17,6 +18,7 @@ from picar import back_wheels, front_wheels
 import picar
 
 import json
+import cv2
 
 try:
     picar.setup()
@@ -39,7 +41,7 @@ except:
     print('[!] Cannot setup picar, are your running on a Raspberry Pi?')
 
 capture = Capture(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT)
-record = Record(capture, settings.RECORD_DIR, record_time_delay=settings.RECORD_TIME_DELAY_SECONDS)
+record = Record(capture, record_dir=settings.RECORD_DIR, record_time_delay=settings.RECORD_TIME_DELAY_SECONDS)
 
 try:
     import autopilot as ap
@@ -147,3 +149,10 @@ def control(request):
 
 def calibration(request):
     return render_to_response("calibration.html")
+
+
+@gzip.gzip_page
+def stream(request):
+    image = record.get_image(fmt='.JPEG')
+    content = (b'--frame\r\n' + b'Content-Type: image/jpeg\r\n\r\n' + image + b'\r\n\r\n')
+    return HttpResponse(content, content_type="multipart/x-mixed-replace;boundary=frame")

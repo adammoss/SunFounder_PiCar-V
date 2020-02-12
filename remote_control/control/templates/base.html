@@ -2,79 +2,92 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
-        <title>{% block title %} Home {% endblock %}</title>
+    <title>{% block title %} Home {% endblock %}</title>
 
-        <!-- Required Stylesheets -->
-        <link
-                type="text/css"
-                rel="stylesheet"
-                href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"
-        />
-        <link
-                type="text/css"
-                rel="stylesheet"
-                href="//unpkg.com/bootstrap-vue@2.4.0/dist/bootstrap-vue.css"
-        />
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/vue-slider-component@3.1.0/theme/default.css">
-
-
-        <!-- Load polyfills to support older browsers -->
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"></script>
-
-        <!-- Required scripts -->
-        <script src="//unpkg.com/vue@2.6.10/dist/vue.js"></script>
-        <script src="//unpkg.com/bootstrap-vue@2.4.0/dist/bootstrap-vue.js"></script>
-        <script src="//cdn.jsdelivr.net/npm/vue-slider-component@3.1.0/dist/vue-slider-component.umd.min.js"></script>
-        <script src="//unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
+    <!-- Required Stylesheets -->
+    <link
+            type="text/css"
+            rel="stylesheet"
+            href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+            type="text/css"
+            rel="stylesheet"
+            href="//unpkg.com/bootstrap-vue@2.4.0/dist/bootstrap-vue.css"
+    />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/vue-slider-component@3.1.0/theme/default.css">
 
 
-    </head>
-    <body>
+    <!-- Load polyfills to support older browsers -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"></script>
 
-        <div id="app">
+    <!-- Required scripts -->
+    <script src="//unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@2.4.0/dist/bootstrap-vue.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/vue-slider-component@3.1.0/dist/vue-slider-component.umd.min.js"></script>
+    <script src="//unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
 
-            <b-navbar toggleable="lg" type="dark" variant="primary">
-                <b-navbar-brand href="/">MLiS</b-navbar-brand>
 
-                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+</head>
+<body>
 
-                <b-collapse id="nav-collapse" is-nav>
-                    <b-navbar-nav>
-                        <b-nav-item href="/">Home</b-nav-item>
-                        <b-nav-item href="/control/">Control</b-nav-item>
-                        <b-nav-item href="/calibration/">Calibration</b-nav-item>
-                    </b-navbar-nav>
+<div id="app">
 
-                </b-collapse>
-            </b-navbar>
+    <b-navbar toggleable="lg" type="dark" variant="primary">
+        <b-navbar-brand href="/">MLiS</b-navbar-brand>
 
-            {% block content %}
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-            <b-container>
-                <div>
-                    <b-img src="{% static 'main_page.jpg' %}" fluid alt="Responsive image"></b-img>
-                </div>
-            </b-container>
+        <b-collapse id="nav-collapse" is-nav>
+            <b-navbar-nav>
+                <b-nav-item href="/">Home</b-nav-item>
+                <b-nav-item href="/control/">Control</b-nav-item>
+                <b-nav-item href="/calibration/">Calibration</b-nav-item>
+            </b-navbar-nav>
 
-            {% endblock %}
+        </b-collapse>
+    </b-navbar>
 
-        </div>
+    {% block content %}
 
-        {% block app %}
+    <b-container>
 
-        <script>
-            window.app = new Vue({
-                el: '#app',
-            })
-        </script>
+        <b-card img-src="/stream/" bg-variant="light" class="my-4" img-right>
+            <b-card-title>Welcome to MLiS2!</b-card-title>
+            <b-card-text>
+                If you can see the image in the right your camera is working correctly.
+                Using this browser interface you can:
+            </b-card-text>
+            <b-list-group flush>
+                <b-list-group-item>Manually drive your car</b-list-group-item>
+                <b-list-group-item>Start and stop recordings</b-list-group-item>
+                <b-list-group-item>Start and stop self-driving</b-list-group-item>
+                <b-list-group-item>Calibrate your car</b-list-group-item>
+            </b-list-group>
+            <!--<b-img src="{% static 'main_page.jpg' %}" fluid alt="Responsive image"></b-img>-->
+        </b-card>
 
-        {% endblock %}
+    </b-container>
 
-    </body>
+    {% endblock %}
+
+</div>
+
+{% block app %}
+
+<script>
+    window.app = new Vue({
+        el: '#app',
+    })
+</script>
+
+{% endblock %}
+
+</body>
 </html>
