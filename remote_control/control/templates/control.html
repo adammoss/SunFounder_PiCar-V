@@ -94,8 +94,8 @@
         methods: {
             controlCar() {
                 const data = {
-                    speed: this.speed,
-                    angle: this.angle + 90,
+                    speed: parseInt(this.speed, 0),
+                    angle: parseInt(this.angle, 0) + 90,
                 };
                 axios.post('/car/', data).then((response) => {
                 }).catch((err) => {
