@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %} Control {% endblock %}
+
+{% block content %}
+
+<b-container>
+
+    <b-card bg-variant="light" class="my-4">
+
+        <b-row class="text-center">
+            <b-col cols="4" class="my-1">
+                <vue-slider
+                        v-model="speed"
+                        :min="-100"
+                        :max="100"
+                        :adsorb="true"
+                        :interval="20"
+                        :marks="true"
+                        :process-style="{ backgroundColor: '#007bff' }"
+                        direction="btt"
+                        style="display: inline-block; margin: 0px 0; height: 300px;"
+                        v-bind="verticalSliderOptions"
+                ></vue-slider>
+            </b-col>
+            <b-col class="my-1" style="padding-top: 125px">
+                <vue-slider
+                        v-model="angle"
+                        :min="-45"
+                        :max="45"
+                        :adsorb="true"
+                        :interval="5"
+                        :marks="[-40, -30, -20, -10, 0, 10, 20, 30, 40]"
+                        :process-style="{ backgroundColor: '#007bff' }"
+                        v-bind="horizontalSliderOptions"
+                ></vue-slider>
+            </b-col>
+        </b-row>
+
+    </b-card>
+
+    <b-card bg-variant="light" class="my-4">
+
+         <b-row class="my-4 text-center">
+            <b-col cols="6" class="my-1">
+                <b-form-checkbox v-model="record" name="record-button" switch size="lg">
+                    Record Driving
+                </b-form-checkbox>
+            </b-col>
+            <b-col class="my-1">
+                <b-form-checkbox v-model="fsd" name="fsd-button" switch size="lg">
+                    Full Self Driving
+                </b-form-checkbox>
+            </b-col>
+        </b-row>
+
+    </b-card>
+
+</b-container>
+
+{% endblock %}
+
+{% block app %}
+
+<script>
+    window.app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            speed: 0,
+            record: false,
+            fsd: false,
+            //angle: {{straight_angle|safe}},
+            angle: 0,
+            verticalSliderOptions: {
+                dotSize: 25,
+                width: 20,
+            },
+            horizontalSliderOptions: {
+                dotSize: 25,
+                height: 20,
+            }
+        },
+        computed: {},
+        mounted() {
+            this.controlCar();
+        },
+        methods: {
+            controlCar() {
+                const data = {
+                    speed: this.speed,
+                    angle: this.angle + 90,
+                };
+                axios.post('/car/', data).then((response) => {
+                }).catch((err) => {
+                })
+            },
+            toggleRecord() {
+                const data = {
+                    record: this.record,
+                };
+                axios.post('/car/', data).then((response) => {
+                }).catch((err) => {
+                })
+            },
+            toggleFSD() {
+                const data = {
+                    fsd: this.fsd,
+                };
+                axios.post('/car/', data).then((response) => {
+                }).catch((err) => {
+                })
+            },
+        },
+        watch: {
+            record(value) {
+                this.toggleRecord();
+            },
+            fsd(value) {
+                this.toggleFSD();
+            },
+            speed(value) {
+                this.controlCar();
+            },
+            angle(value) {
+                this.controlCar();
+            },
+        },
+        components: {
+            'vueSlider': window['vue-slider-component']
+        }
+    })
+
+</script>
+
+{% endblock %}

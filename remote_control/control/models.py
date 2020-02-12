@@ -9,4 +9,5 @@ from django.utils import timezone
 class RecordDriver(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     action = models.CharField(max_length=100)
+    angle = models.IntegerField()
     speed = models.IntegerField()

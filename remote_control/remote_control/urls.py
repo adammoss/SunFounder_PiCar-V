@@ -20,7 +20,8 @@ import control.views as control_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', control_views.home),
-    url(r'^run/$', control_views.run),
-    url(r'^cali/$', control_views.cali),
+    url(r'^control/$', control_views.control),
+    url(r'^car/$', control_views.car),
+    url(r'^calibration/$', control_views.calibration),
     url(r'^connection_test/$', control_views.connection_test),
 ]

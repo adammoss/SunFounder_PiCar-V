@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %} Calibration {% endblock %}
+
+{% block content %}
+
+<b-container>
+
+    <b-card bg-variant="light" class="my-4">
+
+        <b-row>
+            <b-col cols="6">
+
+                <b-row class="text-center">
+                    <b-col cols="12" class="my-4">
+                        Camera
+                    </b-col>
+                    <b-col cols="12">
+                        <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('camcaliup')">Up</b-button>
+                    </b-col>
+                    <b-col cols="12">
+                        <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('camcalileft')">Left</b-button>
+                        <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('camcaliright')">Right</b-button>
+                    </b-col>
+                    <b-col cols="12">
+                        <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('camcalidown')">Down</b-button>
+                    </b-col>
+                </b-row>
+
+            </b-col>
+
+            <b-col cols="6">
+
+                <b-row class="text-center">
+                    <b-col cols="12" class="my-4">
+                        Front Wheels
+                    </b-col>
+                    <b-col cols="12">
+                        <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('fwcalileft')">Left</b-button>
+                        <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('fwcaliright')">Right</b-button>
+                    </b-col>
+                      <b-col cols="12" class="my-4">
+                        Back Wheels
+                    </b-col>
+                    <b-col cols="12">
+                        <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('bwcalileft')">Left</b-button>
+                        <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('bwcaliright')">Right</b-button>
+                    </b-col>
+
+                </b-row>
+
+            </b-col>
+
+            <b-button block variant="success" size="lg" @click="calibrateCar('calisave')" class="my-4">Save Settings</b-button>
+
+    </b-card>
+
+</b-container>
+
+{% endblock %}
+
+{% block app %}
+
+<script>
+    window.app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {},
+        computed: {},
+        mounted() {
+            this.calibrateCar('camcali');
+            this.calibrateCar('fwcali');
+            this.calibrateCar('bwcali');
+        },
+        methods: {
+            calibrateCar(value) {
+                 const data = {
+                    action: value,
+                };
+                axios.post('/car/', data).then((response) => {
+                }).catch((err) => {
+                })
+            },
+        },
+    })
+
+</script>
+
+{% endblock %}
