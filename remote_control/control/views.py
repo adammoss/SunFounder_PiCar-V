@@ -102,7 +102,7 @@ def car(request):
             fsd.stop()
             action = 'stopfsd'
     if 'action' in data:
-        action = data['data']
+        action = data['action']
         # ========== Camera calibration =========
         if action == 'camcali':
             cam.calibration()
