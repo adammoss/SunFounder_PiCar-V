@@ -21,9 +21,9 @@ import json
 
 try:
     picar.setup()
-    fw = front_wheels.Front_Wheels(debug=settings.DEBUG, db=settings.CONFIG_FILE)
-    bw = back_wheels.Back_Wheels(debug=settings.DEBUG, db=settings.CONFIG_FILE)
-    cam = camera.Camera(debug=settings.DEBUG, db=settings.CONFIG_FILE)
+    fw = front_wheels.Front_Wheels(debug=False, db=settings.CONFIG_FILE)
+    bw = back_wheels.Back_Wheels(debug=False, db=settings.CONFIG_FILE)
+    cam = camera.Camera(debug=False, db=settings.CONFIG_FILE)
     cam.ready()
     bw.ready()
     fw.ready()
@@ -73,6 +73,7 @@ def car(request):
         fw.turn(angle)
         ANGLE = angle
         action = 'angle'
+        RecordDriver.objects.create(action=action, angle=ANGLE, speed=SPEED)
     if 'speed' in data:
         speed = max(min(data['speed'], 100), -100)
         if speed < 0:
@@ -85,6 +86,7 @@ def car(request):
             bw.speed = speed
         SPEED = speed
         action = 'speed'
+        RecordDriver.objects.create(action=action, angle=ANGLE, speed=SPEED)
     if 'record' in data:
         if data['record']:
             record.start()
@@ -132,8 +134,6 @@ def car(request):
             cam.cali_ok()
             fw.cali_ok()
             bw.cali_ok()
-    if action:
-        RecordDriver.objects.create(action=action, angle=ANGLE, speed=SPEED)
     return HttpResponse(status=200)
 
 
