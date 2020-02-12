@@ -5,7 +5,7 @@
 """
 
 from django.shortcuts import render_to_response
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators import gzip
@@ -18,7 +18,6 @@ from picar import back_wheels, front_wheels
 import picar
 
 import json
-import cv2
 
 try:
     picar.setup()
@@ -148,6 +147,10 @@ def control(request):
 
 
 def calibration(request):
+    return render_to_response("calibration.html")
+
+
+def get_config(request):
     conf = open(settings.CONFIG_FILE, 'r')
     lines = conf.readlines()
     conf.close()
@@ -159,10 +162,7 @@ def calibration(request):
                     config.append({'variable': line.split('=')[0], 'value': int(line.split('=')[1].rstrip('\n'))})
                 except:
                     pass
-    args = {
-        'config': config
-    }
-    return render_to_response("calibration.html", args)
+    return HttpResponse(json.dumps(config), content_type='application/json')
 
 
 @gzip.gzip_page

@@ -70,20 +70,30 @@
         el: '#app',
         delimiters: ['[[', ']]'],
         data: {
-            config: {{config|safe}},
+            config: [],
         },
         computed: {},
         mounted() {
             this.calibrateCar('camcali');
             this.calibrateCar('fwcali');
             this.calibrateCar('bwcali');
+            this.getConfig();
         },
         methods: {
+             getConfig() {
+                axios.get('/config/').then((response) => {
+                    this.config = response.data;
+                }).catch((err) => {
+                })
+            },
             calibrateCar(value) {
                  const data = {
                     action: value,
                 };
                 axios.post('/car/', data).then((response) => {
+                    if (value === 'calisave') {
+                        this.getConfig()
+;                    }
                 }).catch((err) => {
                 })
             },
