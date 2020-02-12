@@ -35,6 +35,7 @@ class Capture:
 class Record:
 
     file_limit = 1073741824
+    state = ''
 
     def __init__(self, capture, record_dir=None, record_time_delay=1, record_size_limit=1):
         self.capture = capture
@@ -68,7 +69,8 @@ class Record:
                 timestamp = timezone.now().timestamp() * 1000
                 tot_bytes = sum(os.path.getsize(os.path.join(self.record_dir, f)) for f in os.listdir(self.record_dir))
                 if tot_bytes / self.file_limit < self.record_size_limit:
-                    cv2.imwrite(os.path.join(self.record_dir, "%s.png" % int(timestamp)), frame)
+                    filename = "%s_%s.png" % (int(timestamp), self.state)
+                    cv2.imwrite(os.path.join(self.record_dir, filename), frame)
                 else:
                     print('[!] Not saving image, directory size too large.')
             time.sleep(self.record_time_delay - time.time() + start_time)
