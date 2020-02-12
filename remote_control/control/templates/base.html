@@ -58,20 +58,32 @@
 
     <b-container>
 
-        <b-card img-src="/stream/" bg-variant="light" class="my-4" img-bottom>
-            <b-card-title>Welcome to MLiS2!</b-card-title>
-            <b-card-text>
-                If you can see the image below your camera is working correctly.
-                Using this browser interface you can:
-            </b-card-text>
-            <b-list-group flush>
-                <b-list-group-item>Manually drive your car</b-list-group-item>
-                <b-list-group-item>Start and stop recordings</b-list-group-item>
-                <b-list-group-item>Start and stop self-driving</b-list-group-item>
-                <b-list-group-item>Calibrate your car</b-list-group-item>
-            </b-list-group>
-            <!--<b-img src="{% static 'main_page.jpg' %}" fluid alt="Responsive image"></b-img>-->
-        </b-card>
+        <b-row>
+
+            <b-card-group>
+
+                <b-card bg-variant="light" class="m-4">
+                    <b-card-title>Welcome to MLiS2!</b-card-title>
+                    <b-card-text>
+                        If you can see the image your camera is working correctly.
+                        Using this browser interface you can:
+                    </b-card-text>
+                    <b-list-group flush>
+                        <b-list-group-item>Manually drive your car</b-list-group-item>
+                        <b-list-group-item>Start and stop recordings</b-list-group-item>
+                        <b-list-group-item>Start and stop self-driving</b-list-group-item>
+                        <b-list-group-item>Calibrate your car</b-list-group-item>
+                    </b-list-group>
+                    <!--<b-img src="{% static 'main_page.jpg' %}" fluid alt="Responsive image"></b-img>-->
+                </b-card>
+
+                <b-card overlay img-src="/stream/" bg-variant="light" class="m-4">
+                    <!--<b-img src="{% static 'main_page.jpg' %}" fluid alt="Responsive image"></b-img>-->
+                </b-card>
+
+            </b-card-group>
+
+        </b-row>
 
     </b-container>
 

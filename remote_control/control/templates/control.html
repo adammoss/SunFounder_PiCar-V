@@ -9,25 +9,29 @@
     <b-card bg-variant="light" class="my-4">
 
         <b-row class="text-center">
-            <b-col cols="4" class="my-1">
+             <b-col cols="12" class="my-4">
+                 <h5>Speed</h5>
+             </b-col>
+            <b-col cols="12" class="my-4">
                 <vue-slider
                         v-model="speed"
-                        :min="-100"
-                        :max="100"
+                        :min="-70"
+                        :max="70"
                         :adsorb="true"
-                        :interval="20"
+                        :interval="10"
                         :marks="true"
                         :process-style="{ backgroundColor: '#007bff' }"
-                        direction="btt"
-                        style="display: inline-block; margin: 0px 0; height: 300px;"
-                        v-bind="verticalSliderOptions"
+                        v-bind="horizontalSliderOptions"
                 ></vue-slider>
             </b-col>
-            <b-col class="my-1" style="padding-top: 125px">
+            <b-col cols="12" class="my-4">
+                <h5>Steering Angle</h5>
+             </b-col>
+            <b-col cols="12"  class="my-4">
                 <vue-slider
                         v-model="angle"
-                        :min="-45"
-                        :max="45"
+                        :min="-40"
+                        :max="40"
                         :adsorb="true"
                         :interval="5"
                         :marks="[-40, -30, -20, -10, 0, 10, 20, 30, 40]"

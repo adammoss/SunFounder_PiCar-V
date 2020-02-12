@@ -8,12 +8,16 @@
 
     <b-card bg-variant="light" class="my-4">
 
+        <b-row cols="12" class="text-center">
+            <b-table striped hover small fixed :items="config" class="p-4"></b-table>
+        </b-row>
+
         <b-row>
             <b-col cols="6">
 
                 <b-row class="text-center">
                     <b-col cols="12" class="my-4">
-                        Camera
+                        <h5>Camera</h5>
                     </b-col>
                     <b-col cols="12">
                         <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('camcaliup')">Up</b-button>
@@ -33,14 +37,14 @@
 
                 <b-row class="text-center">
                     <b-col cols="12" class="my-4">
-                        Front Wheels
+                        <h5>Front Wheels</h5>
                     </b-col>
                     <b-col cols="12">
                         <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('fwcalileft')">Left</b-button>
                         <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('fwcaliright')">Right</b-button>
                     </b-col>
                       <b-col cols="12" class="my-4">
-                        Back Wheels
+                          <h5>Back Wheels</h5>
                     </b-col>
                     <b-col cols="12">
                         <b-button variant="outline-primary" class="m-4" size="lg" @click="calibrateCar('bwcalileft')">Left</b-button>
@@ -65,7 +69,9 @@
     window.app = new Vue({
         el: '#app',
         delimiters: ['[[', ']]'],
-        data: {},
+        data: {
+            config: {{config|safe}},
+        },
         computed: {},
         mounted() {
             this.calibrateCar('camcali');

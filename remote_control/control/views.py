@@ -148,7 +148,21 @@ def control(request):
 
 
 def calibration(request):
-    return render_to_response("calibration.html")
+    conf = open(settings.CONFIG_FILE, 'r')
+    lines = conf.readlines()
+    conf.close()
+    config = []
+    for line in lines:
+        if line[0] != '#':
+            if len(line.split('=')) == 2:
+                try:
+                    config.append({'variable': line.split('=')[0], 'value': int(line.split('=')[1].rstrip('\n'))})
+                except:
+                    pass
+    args = {
+        'config': config
+    }
+    return render_to_response("calibration.html", args)
 
 
 @gzip.gzip_page
