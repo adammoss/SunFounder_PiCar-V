@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from control.models import RecordDriver
+from control.models import Recording
 
 
-class RecordActionAdmin(admin.ModelAdmin):
-    list_display = ('timestamp', 'action', 'speed', 'angle')
+class RecordingAdmin(admin.ModelAdmin):
+    list_display = ('timestamp',)
 
 
-admin.site.register(RecordDriver, RecordActionAdmin)
+admin.site.register(Recording, RecordingAdmin)

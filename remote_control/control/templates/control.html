@@ -49,6 +49,7 @@
                 <b-form-checkbox v-model="record" name="record-button" switch size="lg">
                     Record Driving
                 </b-form-checkbox>
+                <b-button :disabled="record" variant="danger" class="my-4" @click="deleteRecording()">Delete last recording</b-button>
             </b-col>
             <b-col class="my-1">
                 <b-form-checkbox v-model="fsd" name="fsd-button" switch size="lg">
@@ -120,6 +121,14 @@
                 }).catch((err) => {
                 })
             },
+            deleteRecording(){
+                 const data = {
+                    delete: true,
+                };
+                axios.post('/car/', data).then((response) => {
+                }).catch((err) => {
+                })
+            }
         },
         watch: {
             record(value) {

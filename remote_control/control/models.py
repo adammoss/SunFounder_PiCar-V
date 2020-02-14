@@ -11,3 +11,7 @@ class RecordDriver(models.Model):
     action = models.CharField(max_length=100)
     angle = models.IntegerField()
     speed = models.IntegerField()
+
+
+class Recording(models.Model):
+    timestamp = models.DateTimeField(default=timezone.now)

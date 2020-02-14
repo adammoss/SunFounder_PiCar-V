@@ -5,12 +5,14 @@
 """
 
 from django.shortcuts import render_to_response
+from django.utils import timezone
 from django.http import HttpResponse, StreamingHttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators import gzip
 
 from remote_control.driver import camera, stream
+from control.models import Recording
 from control.utils import Capture
 
 from picar import back_wheels, front_wheels
@@ -19,6 +21,8 @@ import picar
 import json
 import cv2
 import git
+import glob
+import os
 
 try:
     picar.setup()
@@ -52,7 +56,6 @@ except:
 
 SPEED = 60
 ANGLE = straight_angle
-action = ''
 
 
 def home(request):
@@ -90,8 +93,19 @@ def car(request):
     if 'record' in data:
         if data['record']:
             capture.start()
+            Recording.objects.create()
         else:
             capture.stop()
+    if 'delete' in data:
+        if data['delete']:
+            try:
+                timestamp = Recording.objects.latest('timestamp').timestamp
+            except:
+                timestamp = timezone.now()
+            files = glob.glob(settings.RECORD_DIR + '*')
+            for f in files:
+                if int(f.split(settings.RECORD_DIR)[1].split('_')[0]) > timestamp.timestamp() * 1000:
+                    os.remove(os.path.join(settings.RECORD_DIR, f))
     if 'fsd' in data and fsd is not None:
         if data['fsd']:
             fsd.start()
