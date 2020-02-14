@@ -6,10 +6,16 @@
 
 <b-container>
 
-    <b-card bg-variant="light" class="my-4">
+    <b-card
+        border-variant="default"
+        class="m-4"
+    >
 
-        <b-row cols="12" class="text-center">
-            <b-table striped hover small fixed :items="config" class="p-4"></b-table>
+        <h5 class="text-center">Current Vehicle Configuration</h5>
+
+        <b-row cols="12" class="text-center m-4">
+            <b-table striped hover small fixed caption-top :items="config">
+            </b-table>
         </b-row>
 
         <b-row>

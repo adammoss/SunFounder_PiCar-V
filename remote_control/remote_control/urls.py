@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^car/$', control_views.car),
     url(r'^calibration/$', control_views.calibration),
     url(r'^config/$', control_views.get_config),
-    url(r'^stream/$', control_views.stream),
+    url(r'^stream/$', control_views.current_image),
+    url(r'^about/$', control_views.about),
 ]

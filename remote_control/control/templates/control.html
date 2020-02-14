@@ -23,7 +23,8 @@
             <b-col cols="12" class="my-3">
                 <h5>Steering Angle: [[angle]]</h5>
             </b-col>
-            <b-col cols="12" class="my-3">
+            <b-col sm="2" cols="1"></b-col>
+            <b-col sm="8" cols="10" class="my-3">
                 <vue-slider
                         v-model="angle"
                         :min="-40"
@@ -33,8 +34,10 @@
                         :marks="[-40, -30, -20, -10, 0, 10, 20, 30, 40]"
                         :process-style="{ backgroundColor: '#007bff' }"
                         v-bind="horizontalSliderOptions"
+                        :drag-on-click="true"
                 ></vue-slider>
             </b-col>
+            <b-col sm="2" cols="1"></b-col>
         </b-row>
 
     </b-card>

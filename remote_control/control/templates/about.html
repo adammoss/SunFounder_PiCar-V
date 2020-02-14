@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<b-container>
+
+    <b-row>
+
+        <b-col cols="12">
+
+            <b-card
+                    header="About"
+                    border-variant="primary"
+                    header-bg-variant="primary"
+                    header-text-variant="white"
+                    class="m-4"
+            >
+                <b-list-group flush>
+                    <b-list-group-item>Software Version: {{commit}}</b-list-group-item>
+                    <b-list-group-item>Repository location:
+                        <b-link href="https://github.com/adammoss/SunFounder_PiCar-V" target="_blank">https://github.com/adammoss/SunFounder_PiCar-V</b-link>
+                    </b-list-group-item>
+                </b-list-group>
+            </b-card>
+
+        </b-col>
+
+    </b-row>
+
+</b-container>
+
+{% endblock %}

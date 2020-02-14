@@ -37,6 +37,12 @@
 </head>
 <body>
 
+<style type="text/css">
+    .caption {
+        text-align: center;
+    }
+</style>
+
 <div id="app">
 
     <b-navbar toggleable="lg" type="dark" variant="primary">
@@ -49,6 +55,7 @@
                 <b-nav-item href="/">Home</b-nav-item>
                 <b-nav-item href="/control/">Control</b-nav-item>
                 <b-nav-item href="/calibration/">Calibration</b-nav-item>
+                <b-nav-item href="/about/">About</b-nav-item>
             </b-navbar-nav>
 
         </b-collapse>
@@ -62,8 +69,13 @@
 
             <b-card-group>
 
-                <b-card bg-variant="light" class="m-4">
-                    <b-card-title>Welcome to MLiS2!</b-card-title>
+                <b-card
+                        header="Welcome to MLiS2!"
+                        border-variant="primary"
+                        header-bg-variant="primary"
+                        header-text-variant="white"
+                        class="m-4"
+                >
                     <b-card-text>
                         If you can see the image your camera is working correctly.
                         Using this browser interface you can:

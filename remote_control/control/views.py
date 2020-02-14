@@ -18,6 +18,7 @@ import picar
 
 import json
 import cv2
+import git
 
 try:
     picar.setup()
@@ -41,7 +42,6 @@ except:
 
 capture = Capture(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT,
                   record_dir=settings.RECORD_DIR, record_time_delay=settings.RECORD_TIME_DELAY_SECONDS)
-capture.start()
 
 try:
     import autopilot as ap
@@ -72,13 +72,13 @@ def car(request):
         angle = max(min(data['angle'], max_angle), min_angle)
         if angle != ANGLE:
             ANGLE = angle
-            capture.state = '%s_%s' % (ANGLE, SPEED)
+            capture.record_suffix = '%s_%s' % (ANGLE, SPEED)
             fw.turn(angle)
     if 'speed' in data:
         speed = max(min(data['speed'], 100), -100)
         if speed != SPEED:
             SPEED = speed
-            capture.state = '%s_%s' % (ANGLE, SPEED)
+            capture.record_suffix = '%s_%s' % (ANGLE, SPEED)
             if speed < 0:
                 bw.backward()
                 bw.speed = abs(speed)
@@ -89,9 +89,9 @@ def car(request):
                 bw.speed = speed
     if 'record' in data:
         if data['record']:
-            capture.record = True
+            capture.start()
         else:
-            capture.record = False
+            capture.stop()
     if 'fsd' in data and fsd is not None:
         if data['fsd']:
             fsd.start()
@@ -161,7 +161,25 @@ def get_config(request):
 
 
 @gzip.gzip_page
-def stream(request):
-    image = capture.get_image(fmt='.JPEG')
-    content = (b'--frame\r\n' + b'Content-Type: image/jpeg\r\n\r\n' + image + b'\r\n\r\n')
-    return HttpResponse(content, content_type="multipart/x-mixed-replace;boundary=frame")
+def current_image(request):
+    """
+    Get image in JPEG format. Could do this by using caoture.get_current_image() if _update thread was running, but
+    wanted to start and stop the thread by toggling record driving (so this may not be running). The reason why I grab
+    5 frames is due to the buffering issue described in
+    https://stackoverflow.com/questions/24370725/opencv-videocapture-only-updates-after-5-reads
+    """
+    for _ in range(5):
+        ret, frame = capture.camera.read()
+        if frame is not None:
+            ret, image = cv2.imencode('.JPEG', frame)
+            content = (b'--frame\r\n' + b'Content-Type: image/jpeg\r\n\r\n' + image.tobytes() + b'\r\n\r\n')
+            return HttpResponse(content, content_type="multipart/x-mixed-replace;boundary=frame")
+    return HttpResponse(status=500)
+
+
+def about(request):
+    repo = git.Repo(search_parent_directories=True)
+    args = {
+        'commit': repo.head.commit
+    }
+    return render_to_response("about.html", args)
