@@ -177,18 +177,21 @@ def get_config(request):
 @gzip.gzip_page
 def current_image(request):
     """
-    Get image in JPEG format. Could do this by using caoture.get_current_image() if _update thread was running, but
+    Get image in JPEG format. Could do this by using capture.get_current_image() if _update thread was running, but
     wanted to start and stop the thread by toggling record driving (so this may not be running). The reason why I grab
-    5 frames is due to the buffering issue described in
+    several frames is due to the buffering issue described in
     https://stackoverflow.com/questions/24370725/opencv-videocapture-only-updates-after-5-reads
     """
+    frame = None
     for _ in range(5):
         ret, frame = capture.camera.read()
         if frame is not None:
             ret, image = cv2.imencode('.JPEG', frame)
             content = (b'--frame\r\n' + b'Content-Type: image/jpeg\r\n\r\n' + image.tobytes() + b'\r\n\r\n')
-            return HttpResponse(content, content_type="multipart/x-mixed-replace;boundary=frame")
-    return HttpResponse(status=500)
+    if frame is not None:
+        return HttpResponse(content, content_type="multipart/x-mixed-replace;boundary=frame")
+    else:
+        return HttpResponse(status=500)
 
 
 def about(request):
