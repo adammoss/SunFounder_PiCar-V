@@ -86,11 +86,9 @@
                         <b-list-group-item>Start and stop self-driving</b-list-group-item>
                         <b-list-group-item>Calibrate your car</b-list-group-item>
                     </b-list-group>
-                    <!--<b-img src="{% static 'main_page.jpg' %}" fluid alt="Responsive image"></b-img>-->
                 </b-card>
 
-                <b-card overlay img-src="/stream/" bg-variant="light" class="m-4">
-                    <!--<b-img src="{% static 'main_page.jpg' %}" fluid alt="Responsive image"></b-img>-->
+                <b-card overlay :img-src="getImageURL()" bg-variant="light" class="m-4">
                 </b-card>
 
             </b-card-group>
@@ -108,6 +106,12 @@
 <script>
     window.app = new Vue({
         el: '#app',
+        methods: {
+             getImageURL() {
+                const today = new Date().getTime();
+                return '/stream/'
+            }
+        }
     })
 </script>
 

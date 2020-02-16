@@ -182,13 +182,13 @@ def current_image(request):
     several frames is due to the buffering issue described in
     https://stackoverflow.com/questions/24370725/opencv-videocapture-only-updates-after-5-reads
     """
-    frame = None
+    image = None
     for _ in range(5):
         ret, frame = capture.camera.read()
         if frame is not None:
             ret, image = cv2.imencode('.JPEG', frame)
-            content = (b'--frame\r\n' + b'Content-Type: image/jpeg\r\n\r\n' + image.tobytes() + b'\r\n\r\n')
-    if frame is not None:
+    if image is not None:
+        content = (b'--frame\r\n' + b'Content-Type: image/jpeg\r\n\r\n' + image.tobytes() + b'\r\n\r\n')
         return HttpResponse(content, content_type="multipart/x-mixed-replace;boundary=frame")
     else:
         return HttpResponse(status=500)

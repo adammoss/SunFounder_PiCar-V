@@ -6,64 +6,79 @@
 
 <b-container>
 
-    <b-card
-        border-variant="default"
-        class="m-4"
-    >
+    <b-card-group>
 
-        <h5 class="text-center">Current Vehicle Configuration</h5>
+        <b-card
+                class="my-4"
+                header="Current Vehicle Configuration"
 
-        <b-row cols="12" class="text-center m-4">
-            <b-table striped hover small fixed caption-top :items="config">
+                header-bg-variant="primary"
+                header-text-variant="white"
+        >
+             <b-card-img fluid :src="getImageURL()" alt="Image" class="rounded-0 my-4"></b-card-img>
+            <b-table responsive striped hover small fixed caption-top :items="config">
             </b-table>
-        </b-row>
+        </b-card>
 
-        <b-row>
-            <b-col cols="6">
+        <b-card
+                class="my-4"
+                header="Adjust Configuration"
+                header-bg-variant="primary"
+                header-text-variant="white"
+        >
+            <b-row class="text-center">
+                <b-col cols="12" class="my-4">
+                    <h5>Camera</h5>
+                </b-col>
+                <b-col cols="12">
+                    <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('camcaliup')">
+                        Up
+                    </b-button>
+                </b-col>
+                <b-col cols="12">
+                    <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('camcalileft')">
+                        Left
+                    </b-button>
+                    <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('camcaliright')">
+                        Right
+                    </b-button>
+                </b-col>
+                <b-col cols="12">
+                    <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('camcalidown')">
+                        Down
+                    </b-button>
+                </b-col>
+            </b-row>
+            <b-row class="text-center">
+                <b-col cols="12" class="my-4">
+                    <h5>Front Wheels</h5>
+                </b-col>
+                <b-col cols="12">
+                    <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('fwcalileft')">
+                        Left
+                    </b-button>
+                    <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('fwcaliright')">
+                        Right
+                    </b-button>
+                </b-col>
+                <b-col cols="12" class="my-4">
+                    <h5>Back Wheels</h5>
+                </b-col>
+                <b-col cols="12">
+                    <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('bwcalileft')">
+                        Left
+                    </b-button>
+                    <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('bwcaliright')">
+                        Right
+                    </b-button>
+                </b-col>
+            </b-row>
+            <b-button block variant="primary" size="lg" @click="calibrateCar('calisave')" class="my-4">Save Settings
+            </b-button>
+        </b-card>
 
-                <b-row class="text-center">
-                    <b-col cols="12" class="my-2">
-                        <h5>Camera</h5>
-                    </b-col>
-                    <b-col cols="12">
-                        <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('camcaliup')">Up</b-button>
-                    </b-col>
-                    <b-col cols="12">
-                        <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('camcalileft')">Left</b-button>
-                        <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('camcaliright')">Right</b-button>
-                    </b-col>
-                    <b-col cols="12">
-                        <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('camcalidown')">Down</b-button>
-                    </b-col>
-                </b-row>
+    </b-card-group>
 
-            </b-col>
-
-            <b-col cols="6">
-
-                <b-row class="text-center">
-                    <b-col cols="12" class="my-2">
-                        <h5>Front Wheels</h5>
-                    </b-col>
-                    <b-col cols="12">
-                        <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('fwcalileft')">Left</b-button>
-                        <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('fwcaliright')">Right</b-button>
-                    </b-col>
-                      <b-col cols="12" class="my-2">
-                          <h5>Back Wheels</h5>
-                    </b-col>
-                    <b-col cols="12">
-                        <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('bwcalileft')">Left</b-button>
-                        <b-button variant="outline-primary" class="m-2" size="lg" @click="calibrateCar('bwcaliright')">Right</b-button>
-                    </b-col>
-
-                </b-row>
-
-            </b-col>
-
-            <b-button block variant="success" size="lg" @click="calibrateCar('calisave')" class="my-4">Save Settings</b-button>
-
-    </b-card>
 
 </b-container>
 
@@ -86,23 +101,28 @@
             this.getConfig();
         },
         methods: {
-             getConfig() {
+            getConfig() {
                 axios.get('/config/').then((response) => {
                     this.config = response.data;
                 }).catch((err) => {
                 })
             },
             calibrateCar(value) {
-                 const data = {
+                const data = {
                     action: value,
                 };
                 axios.post('/car/', data).then((response) => {
                     if (value === 'calisave') {
                         this.getConfig()
-;                    }
+                    }
+                    this.getImageURL()
                 }).catch((err) => {
                 })
             },
+            getImageURL() {
+                const today = new Date().getTime();
+                return '/stream/'
+            }
         },
     })
 
