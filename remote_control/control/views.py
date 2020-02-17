@@ -147,6 +147,12 @@ def car(request):
 
 
 def control(request):
+    try:
+        cam.ready()
+        bw.ready()
+        fw.ready()
+    except:
+        pass
     args = {
         'straight_angle': straight_angle,
         'min_angle': min_angle,
