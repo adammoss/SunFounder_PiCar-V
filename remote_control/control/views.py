@@ -104,7 +104,7 @@ def car(request):
                 timestamp = timezone.now()
             files = glob.glob(settings.RECORD_DIR + '*')
             for f in files:
-                if int(f.split(settings.RECORD_DIR)[1].split('_')[0]) > timestamp.timestamp() * 1000:
+                if os.path.isfile(f) and int(f.split(settings.RECORD_DIR)[1].split('_')[0]) > timestamp.timestamp() * 1000:
                     os.remove(os.path.join(settings.RECORD_DIR, f))
     if 'fsd' in data and fsd is not None:
         if data['fsd']:
