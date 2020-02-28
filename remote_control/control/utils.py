@@ -27,6 +27,7 @@ class Capture:
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
         self.record_dir = record_dir
         self.record_time_delay = record_time_delay
+        print(self.record_time_delay)
         self.record_size_limit = record_size_limit
         self.current_frame = None
         self._started = False
