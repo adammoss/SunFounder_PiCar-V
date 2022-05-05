@@ -24,6 +24,7 @@ import cv2
 import git
 import glob
 import os
+import logging
 
 try:
     picar.setup()
@@ -47,6 +48,8 @@ except:
 
 capture = Capture(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT,
                   record_dir=settings.RECORD_DIR, record_time_delay=settings.RECORD_TIME_DELAY_SECONDS)
+
+logging.basicConfig(filename="picar.log", level=logging.INFO)
 
 try:
     import autopilot as ap
@@ -78,6 +81,7 @@ def connection_test(request):
 @csrf_exempt
 def car(request):
     global SPEED, ANGLE
+    logging.info(request.body.decode('utf-8'))
     data = json.loads(request.body.decode('utf-8'))
     print(data)
     if 'angle' in data:
