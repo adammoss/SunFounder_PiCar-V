@@ -49,7 +49,7 @@ except:
 capture = Capture(width=settings.CAPTURE_WIDTH, height=settings.CAPTURE_HEIGHT,
                   record_dir=settings.RECORD_DIR, record_time_delay=settings.RECORD_TIME_DELAY_SECONDS)
 
-logging.basicConfig(filename="picar.log", level=logging.INFO)
+logging.basicConfig(format='%(asctime)s - %(message)s', filename="picar.log", level=logging.INFO)
 
 try:
     import autopilot as ap
@@ -63,10 +63,11 @@ ANGLE = straight_angle
 
 def get_fsd_modules() -> List[str]:
     modules = []
-    for d in os.listdir(settings.MODULE_DIR):
-        if os.path.isdir(os.path.join(settings.MODULE_DIR, d)):
-            if d not in ['__pycache__']:
-                modules.append(d)
+    if os.path.isdir(settings.MODULE_DIR):
+        for d in os.listdir(settings.MODULE_DIR):
+            if os.path.isdir(os.path.join(settings.MODULE_DIR, d)):
+                if d not in ['__pycache__']:
+                    modules.append(d)
     return modules
 
 
@@ -168,11 +169,19 @@ def control(request):
         fw.ready()
     except:
         pass
+    fsd_modules = get_fsd_modules()
+    if 'base' in fsd_modules:
+        fsd_selection = 'base'
+    elif len(fsd_modules) > 0:
+        fsd_selection = fsd_modules[0]
+    else:
+        fsd_selection = None
     args = {
         'straight_angle': straight_angle,
         'min_angle': min_angle,
         'max_angle': max_angle,
-        'fsd_modules': get_fsd_modules()
+        'fsd_modules': fsd_modules,
+        'fsd_selection': fsd_selection,
     }
     return render_to_response("control.html", args)
 

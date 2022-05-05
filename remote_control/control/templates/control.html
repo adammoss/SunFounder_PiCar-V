@@ -9,19 +9,20 @@
     <b-card bg-variant="light" class="my-4">
 
         <b-row class="text-center">
-
             <b-col cols="12" class="my-3">
-                 <b-form-radio-group
-                    id="btn-radios-2"
-                    v-model="speed"
-                    :options="speedOptions"
-                    buttons
-                    button-variant="outline-primary"
-                    size="lg"
-            ></b-form-radio-group>
+                <b-form-group label="Speed (use spotters for ludicrous and plaid)" label-size="lg">
+                     <b-form-radio-group
+                        id="btn-radios-2"
+                        v-model="speed"
+                        :options="speedOptions"
+                        buttons
+                        button-variant="outline-primary"
+                        size="lg"
+                    ></b-form-radio-group>
+                </b-form-group>
             </b-col>
             <b-col cols="12" class="my-3">
-                <h5>Steering Angle: [[angle]]</h5>
+                <h6>Steering Angle: [[angle]]</h6>
             </b-col>
             <b-col sm="2" cols="1"></b-col>
             <b-col sm="8" cols="10" class="my-3">
@@ -56,10 +57,15 @@
                     Full Self Driving
                 </b-form-checkbox>
             </b-col>
-            <b-form-group label="selectFSD" v-slot="{ ariaDescribedby }"></b-form-group>
-            {% for module in fsd_modules %}
-                <b-form-radio v-model="fsd_selection" :aria-describedby="ariaDescribedby" name="some-radios" value='{{ module }}'>{{ module }}</b-form-radio>
-            {% endfor %}
+            <b-form-group label="Select FSD Model" v-slot="{ ariaDescribedby }" label-size="lg">
+                {% for module in fsd_modules %}
+                    <b-form-radio
+                            v-model="fsd_selection"
+                            :aria-describedby="ariaDescribedby"
+                            value="{{ module }}"
+                            size="lg"
+                    >{{ module }}</b-form-radio>
+                {% endfor %}
             </b-form-group>
         </b-row>
 
@@ -79,7 +85,7 @@
             speed: 0,
             record: false,
             fsd: false,
-            //angle: {{straight_angle|safe}},
+            fsd_selection: '{{fsd_selection}}',
             angle: 0,
             verticalSliderOptions: {
                 dotSize: 25,
@@ -92,8 +98,9 @@
             speedOptions: [
                 {text: 'Back', value: -35},
                 {text: 'Stop', value: 0},
-                {text: 'Slow', value: 35},
-                {text: 'Fast', value: 50}
+                {text: 'Forward', value: 35},
+                {text: 'Ludicrous', value: 50},
+                {text: 'Plaid', value: 100},
             ],
         },
         computed: {},
