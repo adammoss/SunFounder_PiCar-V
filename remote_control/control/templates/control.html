@@ -56,6 +56,11 @@
                     Full Self Driving
                 </b-form-checkbox>
             </b-col>
+            <b-form-group label="selectFSD" v-slot="{ ariaDescribedby }"></b-form-group>
+            {% for module in fsd_modules %}
+                <b-form-radio v-model="fsd_selection" :aria-describedby="ariaDescribedby" name="some-radios" value='{{ module }}'>{{ module }}</b-form-radio>
+            {% endfor %}
+            </b-form-group>
         </b-row>
 
     </b-card>
@@ -116,6 +121,14 @@
             toggleFSD() {
                 const data = {
                     fsd: this.fsd,
+                };
+                axios.post('/car/', data).then((response) => {
+                }).catch((err) => {
+                })
+            },
+            selectFSD() {
+                const data = {
+                    fsd_model: this.fsd_selection,
                 };
                 axios.post('/car/', data).then((response) => {
                 }).catch((err) => {

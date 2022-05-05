@@ -4,6 +4,7 @@
 .. module author:: Adam Moss <adam.moss@nottingham.ac.uk>
 """
 
+from typing import List
 from django.shortcuts import render_to_response
 from django.utils import timezone
 from django.http import HttpResponse, StreamingHttpResponse
@@ -56,6 +57,10 @@ except:
 
 SPEED = 60
 ANGLE = straight_angle
+
+def get_fsd_modules() -> List[str]:
+    module_dir = './autopilot/models/'
+    return list(filter(os.path.isdir, os.listdir(module_dir)))
 
 
 def home(request):
@@ -111,6 +116,8 @@ def car(request):
             fsd.start()
         else:
             fsd.stop()
+    if 'fsd_model' in data and fsd is not None:
+        fsd.load_model(data['fsd_model'])
     if 'action' in data:
         action = data['action']
         # ========== Camera calibration =========
@@ -156,7 +163,8 @@ def control(request):
     args = {
         'straight_angle': straight_angle,
         'min_angle': min_angle,
-        'max_angle': max_angle
+        'max_angle': max_angle,
+        'fsd_modules': get_fsd_modules()
     }
     return render_to_response("control.html", args)
 
