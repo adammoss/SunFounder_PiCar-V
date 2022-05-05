@@ -131,3 +131,7 @@ RECORD_DIR = os.environ.get('RECORD_DIR', BASE_DIR + '/capture/')
 RECORD_TIME_DELAY_SECONDS = float(os.environ.get('RECORD_TIME_DELAY_SECONDS', 1))
 CAPTURE_WIDTH = int(os.environ.get('CAPTURE_WIDTH', 320))
 CAPTURE_HEIGHT = int(os.environ.get('CAPTURE_HEIGHT', 240))
+
+# Autopilot
+
+MODULE_DIR = '/home/pi/autopilot/autopilot/models'

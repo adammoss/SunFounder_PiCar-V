@@ -59,8 +59,12 @@ SPEED = 60
 ANGLE = straight_angle
 
 def get_fsd_modules() -> List[str]:
-    module_dir = './autopilot/models/'
-    return list(filter(os.path.isdir, os.listdir(module_dir)))
+    modules = []
+    for d in os.listdir(settings.MODULE_DIR):
+        if os.path.isdir(os.path.join(settings.MODULE_DIR), d):
+            if d not in ['__pycache__']:
+                modules.append(d)
+    return modules
 
 
 def home(request):
