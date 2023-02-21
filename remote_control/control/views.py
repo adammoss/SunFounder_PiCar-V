@@ -25,6 +25,7 @@ import git
 import glob
 import os
 import logging
+import numpy as np 
 
 try:
     picar.setup()
@@ -214,8 +215,13 @@ def current_image(request):
     https://stackoverflow.com/questions/24370725/opencv-videocapture-only-updates-after-5-reads
     """
     image = None
+    cal_points = np.load('/home/pi/SunFounder_PiCar-V/remote_control/control/cal.npy') # calibration points
+    
     for _ in range(5):
         ret, frame = capture.camera.read()
+        frame[cal_points==1,0] = 255
+        frame[cal_points==1,1] = 0
+        frame[cal_points==1,2] = 0
         if frame is not None:
             ret, image = cv2.imencode('.JPEG', frame)
     if image is not None:
