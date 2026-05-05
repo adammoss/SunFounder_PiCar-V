@@ -11,27 +11,19 @@
     <title>{% block title %} Home {% endblock %}</title>
 
     <!-- Required Stylesheets -->
-    <link
-            type="text/css"
-            rel="stylesheet"
-            href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"
-    />
-    <link
-            type="text/css"
-            rel="stylesheet"
-            href="//unpkg.com/bootstrap-vue@2.4.0/dist/bootstrap-vue.css"
-    />
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/vue-slider-component@3.1.0/theme/default.css">
+    <link type="text/css" rel="stylesheet" href="{% static 'vendor/bootstrap.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'vendor/bootstrap-vue.css' %}"/>
+    <link rel="stylesheet" href="{% static 'vendor/vue-slider-component.css' %}">
 
 
     <!-- Load polyfills to support older browsers -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"></script>
+    <script src="{% static 'vendor/polyfill.min.js' %}"></script>
 
     <!-- Required scripts -->
-    <script src="//unpkg.com/vue@2.6.10/dist/vue.js"></script>
-    <script src="//unpkg.com/bootstrap-vue@2.4.0/dist/bootstrap-vue.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/vue-slider-component@3.1.0/dist/vue-slider-component.umd.min.js"></script>
-    <script src="//unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
+    <script src="{% static 'vendor/vue.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-vue.js' %}"></script>
+    <script src="{% static 'vendor/vue-slider-component.umd.min.js' %}"></script>
+    <script src="{% static 'vendor/axios.min.js' %}"></script>
 
 
 </head>
